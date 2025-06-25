@@ -1,42 +1,42 @@
 # Junior Developer Task – June 2025
 
-This project is a serverless API endpoint built to fulfill a technical challenge. The API receives a string via a webhook, transforms the string into an array of characters, sorts them alphabetically, and returns the result as a JSON response.
+This project is a Node.js Express API built to fulfill a technical challenge. The API receives a string via a POST request, sorts its characters alphabetically, and returns the result as a JSON response.
 
 ## 🧠 Objective
 
 Create a POST API endpoint that:
 
-- Accepts a JSON payload with a data field (string).
-
+- Accepts a JSON payload with a `text` field (string).
 - Converts the string into a character array.
-
 - Sorts the array alphabetically.
-
-- Returns the sorted characters as a word array in JSON format.
+- Returns the sorted characters as a string in JSON format.
 
 ## 📂 Project Structure
 
-src/
-├── index.ts                # Main application entry point
-├── logger.ts               # Logger utility
-├── middleware/             # Custom middleware (error handler, validation, etc.)
-│   ├── errorHandler.ts
-│   └── validate.ts
+```
+junior-dev-task-backend/
+├── api/
+│   ├── sort-characters.js      # Main Express API logic
+│   └── _utils/
+│       └── response.js         # Response helpers
+├── tests/
+│   └── sort.test.js            # API tests (Jest + Supertest)
+├── package.json
+└── README.md
+```
 
 ## 🛠️ Technologies Used
 
 - Node.js
-
 - Express.js
-
-- Vercel Serverless Functions (for deployment)
-
-- TypeScript
+- Jest & Supertest (for testing)
 
 ## 📦 Installation
 
-```sh
-https://github.com/mokone-september/string-processor-api
+```bash
+git clone https://github.com/mokone-september/string-processor-api
+cd junior-dev-task-backend
+npm install
 ```
 
 ## 🚀 Running Locally
@@ -50,18 +50,19 @@ The server will run by default on:
 
 ## API Endpoints
 
-| Method | Endpoint           | Description                                 |
-| ------ | ------------------ | ------------------------------------------- |
-| POST   | /process-string    | Accepts JSON `{ data: "string" }`, returns sorted array of characters as `word` |
+| Method | Endpoint                | Description                                                        |
+| ------ | ----------------------- | ------------------------------------------------------------------ |
+| POST   | /api/sort-characters    | Accepts JSON `{ "text": "string" }`, returns sorted string         |
+| GET    | /api/health             | Health check endpoint                                              |
 
 ### Example Request
 
-```json
-POST /process-string
+```http
+POST /api/sort-characters
 Content-Type: application/json
 
 {
-  "data": "example"
+  "text": "example"
 }
 ```
 
@@ -69,21 +70,24 @@ Content-Type: application/json
 
 ```json
 {
-  "word": ["a", "e", "e", "l", "m", "p", "x"]
+  "original": "example",
+  "sorted": "aeelmpx",
+  "length": 7,
+  "processingTime": "123456789ns"
 }
 ```
 
-## Running tests
+## 🧪 Running tests
 
 ```bash
-npm run test
+npm test
 ```
 
 This will run backend unit and integration tests using Jest and Supertest.
 
 ## Contact
 
-For any inquiries or support, please contact us at <mokoneseptember@gmail.com>.
+For any inquiries or support, please contact <mokoneseptember@gmail.com>.
 
 ## 📄 License
 
