@@ -2,14 +2,23 @@
   "version": 2,
   "builds": [
     {
-      "src": "main.js",
+      "src": "api/**/*.js",
       "use": "@vercel/node"
     }
   ],
   "routes": [
     {
       "src": "/api/(.*)",
-      "dest": "main.js"
+      "dest": "/api/sort-characters",
+      "methods": ["GET", "POST"]
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/api/sort-characters",
+      "status": 404
     }
-  ]
+  ],
+  "env": {
+    "ALLOWED_ORIGINS": "https://your-app.vercel.app,http://localhost:3000"
+  }
 }
