@@ -2,23 +2,20 @@
   "version": 2,
   "builds": [
     {
-      "src": "api/**/*.js",
+      "src": "api/sort-characters.js",
       "use": "@vercel/node"
     }
   ],
   "routes": [
     {
-      "src": "/api/(.*)",
+      "src": "/api/sort-characters",
       "dest": "/api/sort-characters",
-      "methods": ["GET", "POST"]
+      "methods": ["POST"]
     },
     {
-      "src": "/(.*)",
+      "src": "/api/health",
       "dest": "/api/sort-characters",
-      "status": 404
+      "methods": ["GET"]
     }
-  ],
-  "env": {
-    "ALLOWED_ORIGINS": "https://your-app.vercel.app,http://localhost:3000"
-  }
+  ]
 }
