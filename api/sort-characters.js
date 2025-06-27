@@ -2,16 +2,19 @@ require('dotenv').config()
 const express = require('express')
 const cors = require('cors')
 const rateLimit = require('express-rate-limit')
+const { z } = require('zod')
 const { success, error } = require('./_utils/response')
 
 const app = express()
 
-// Security Middleware
+// CORS Configuration
 app.use(
   cors({
     origin: process.env.ALLOWED_ORIGINS?.split(',') || '*',
+    optionsSuccessStatus: 200,
   })
 )
+
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
@@ -24,9 +27,13 @@ const limiter = rateLimit({
 })
 app.use(limiter)
 
-// Enhanced Sorting Logic
+// Zod Schema for Validation
+const sortSchema = z.object({
+  data: z.string().min(1, 'Input cannot be empty').max(1000, 'Input too long'),
+})
+
+// Sorting Function
 const sortString = (str) => {
-  if (!str) return ''
   return str
     .split('')
     .sort((a, b) =>
@@ -38,18 +45,17 @@ const sortString = (str) => {
     .join('')
 }
 
-// API Endpoint
+// POST Endpoint
 app.post('/api/sort-characters', (req, res) => {
   try {
-    const { data } = req.body
+    const parsed = sortSchema.safeParse(req.body)
 
-    if (typeof data !== 'string') {
-      return error(res, 'Input must be a string under "data" field', 400)
+    if (!parsed.success) {
+      const issues = parsed.error.errors.map((e) => e.message).join(', ')
+      return error(res, `Validation failed: ${issues}`, 400)
     }
 
-    if (data.length > 1000) {
-      return error(res, 'Input too long (max 1000 characters)', 413)
-    }
+    const { data } = parsed.data
 
     const start = process.hrtime.bigint()
     const sorted = sortString(data)
@@ -62,7 +68,6 @@ app.post('/api/sort-characters', (req, res) => {
       processingTime: `${end - start}ns`,
     })
   } catch (err) {
-    // eslint-disable-next-line no-console
     console.error(`[${new Date().toISOString()}] Error:`, err)
     error(res, 'Internal server error', 500)
   }
@@ -78,22 +83,19 @@ app.use((req, res) => {
   error(res, 'Endpoint not found', 404)
 })
 
-// Error Handler
+// Global Error Handler
 app.use((err, req, res, next) => {
-  // eslint-disable-next-line no-console
   console.error('Unhandled error:', err)
   error(res, 'Unexpected server error', 500)
 })
 
 module.exports = app
 
-// Local Dev Server
+// Development Server
 if (require.main === module) {
   const PORT = process.env.PORT || 3000
   app.listen(PORT, () => {
-    // eslint-disable-next-line no-console
-    console.log(`Server running on port ${PORT}`)
-    // eslint-disable-next-line no-console
-    console.log(`API endpoint: http://localhost:${PORT}/api/sort-characters`)
+    console.log(`✅ Server running on port ${PORT}`)
+    console.log(`🖥️  API endpoint: http://localhost:${PORT}/api/sort-characters`)
   })
 }
