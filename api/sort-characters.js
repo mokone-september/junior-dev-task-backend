@@ -41,22 +41,22 @@ const sortString = (str) => {
 // API Endpoint
 app.post('/api/sort-characters', (req, res) => {
   try {
-    const { text } = req.body
+    const { data } = req.body
 
-    if (typeof text !== 'string') {
-      return error(res, 'Input must be a string under "text" field', 400)
+    if (typeof data !== 'string') {
+      return error(res, 'Input must be a string under "data" field', 400)
     }
 
-    if (text.length > 1000) {
+    if (data.length > 1000) {
       return error(res, 'Input too long (max 1000 characters)', 413)
     }
 
-    const sorted = sortString(text)
+    const sorted = sortString(data)
 
     success(res, {
-      original: text,
+      original: data,
       sorted,
-      length: text.length,
+      length: data.length,
       processingTime: `${process.hrtime.bigint()}ns`,
     })
   } catch (err) {
