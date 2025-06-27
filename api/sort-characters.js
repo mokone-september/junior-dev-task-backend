@@ -1,7 +1,7 @@
 require('dotenv').config()
 const express = require('express')
 const cors = require('cors')
-const helmet = require('helmet') // <-- NEW
+const helmet = require('helmet')
 const rateLimit = require('express-rate-limit')
 const { z } = require('zod')
 const { success, error } = require('./_utils/response')
@@ -16,9 +16,12 @@ app.use(
   cors({
     origin: process.env.ALLOWED_ORIGINS?.split(',') || '*',
     optionsSuccessStatus: 200,
+    preflightContinue: false,
+    maxAge: 86400, // 💡 Cache preflight response for 24 hours (in seconds)
   })
 )
 
+// 🧩 Body Parser Middleware
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
