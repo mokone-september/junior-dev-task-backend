@@ -1,13 +1,17 @@
 require('dotenv').config()
 const express = require('express')
 const cors = require('cors')
+const helmet = require('helmet') // <-- NEW
 const rateLimit = require('express-rate-limit')
 const { z } = require('zod')
 const { success, error } = require('./_utils/response')
 
 const app = express()
 
-// CORS Configuration
+// 🔒 Security Headers
+app.use(helmet())
+
+// 🌍 CORS Configuration
 app.use(
   cors({
     origin: process.env.ALLOWED_ORIGINS?.split(',') || '*',
@@ -18,7 +22,7 @@ app.use(
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
-// Rate Limiting (100 requests per 15 minutes)
+// 🚦 Rate Limiting (100 requests per 15 minutes)
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 100,
@@ -27,12 +31,12 @@ const limiter = rateLimit({
 })
 app.use(limiter)
 
-// Zod Schema for Validation
+// 🛂 Zod Schema for Validation
 const sortSchema = z.object({
   data: z.string().min(1, 'Input cannot be empty').max(1000, 'Input too long'),
 })
 
-// Sorting Function
+// 🔤 Sorting Function
 const sortString = (str) => {
   return str
     .split('')
@@ -45,7 +49,7 @@ const sortString = (str) => {
     .join('')
 }
 
-// POST Endpoint
+// 🚀 POST Endpoint
 app.post('/api/sort-characters', (req, res) => {
   try {
     const parsed = sortSchema.safeParse(req.body)
@@ -73,17 +77,17 @@ app.post('/api/sort-characters', (req, res) => {
   }
 })
 
-// Health Check
+// ✅ Health Check
 app.get('/api/health', (req, res) => {
   success(res, { status: 'operational' })
 })
 
-// 404 Handler
+// ❌ 404 Handler
 app.use((req, res) => {
   error(res, 'Endpoint not found', 404)
 })
 
-// Global Error Handler
+// 🔥 Global Error Handler
 app.use((err, req, res, next) => {
   console.error('Unhandled error:', err)
   error(res, 'Unexpected server error', 500)
@@ -91,7 +95,7 @@ app.use((err, req, res, next) => {
 
 module.exports = app
 
-// Development Server
+// 🛠️ Development Server
 if (require.main === module) {
   const PORT = process.env.PORT || 3000
   app.listen(PORT, () => {
