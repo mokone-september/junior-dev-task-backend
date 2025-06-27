@@ -7,9 +7,7 @@
     "dev": "nodemon api/sort-characters.js",
     "test": "jest --coverage",
     "lint": "eslint .",
-    "lint:fix": "eslint --fix .",
-    "deploy": "vercel --prod",
-    "vercel-dev": "vercel dev"
+    "lint:fix": "eslint --fix ."
   },
   "keywords": [],
   "author": "Thabiso Mokone",
