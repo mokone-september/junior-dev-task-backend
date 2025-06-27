@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 const request = require('supertest')
-const app = require('../api/sort-characters')
+const app = require('../api')
 
 describe('POST /api/sort-characters', () => {
   it('✅ should sort characters alphabetically', async () => {
