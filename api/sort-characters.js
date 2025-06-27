@@ -51,13 +51,15 @@ app.post('/api/sort-characters', (req, res) => {
       return error(res, 'Input too long (max 1000 characters)', 413)
     }
 
+    const start = process.hrtime.bigint()
     const sorted = sortString(data)
+    const end = process.hrtime.bigint()
 
     success(res, {
       original: data,
       sorted,
       length: data.length,
-      processingTime: `${process.hrtime.bigint()}ns`,
+      processingTime: `${end - start}ns`,
     })
   } catch (err) {
     // eslint-disable-next-line no-console
