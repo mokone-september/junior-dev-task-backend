@@ -6,7 +6,7 @@ This project is a Node.js Express API built to fulfill a technical challenge. Th
 
 Create a POST API endpoint that:
 
-- Accepts a JSON payload with a `text` field (string).
+- Accepts a JSON payload with a `data` field (string).
 - Converts the string into a character array.
 - Sorts the array alphabetically.
 - Returns the sorted characters as a string in JSON format.
