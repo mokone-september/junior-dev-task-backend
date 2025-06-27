@@ -52,17 +52,20 @@ The server will run by default on:
 
 | Method | Endpoint                | Description                                                        |
 | ------ | ----------------------- | ------------------------------------------------------------------ |
-| POST   | /api/sort-characters    | Accepts JSON `{ "text": "string" }`, returns sorted string         |
+| POST   | /api/sort-characters    | Accepts JSON `{ "data": "string" }`, returns sorted string         |
 | GET    | /api/health             | Health check endpoint                                              |
+
+Base URL: [https://junior-dev-task-backend.onrender.com](https://junior-dev-task-backend.onrender.com)
 
 ### Example Request
 
 ```http
 POST /api/sort-characters
+Host: junior-dev-task-backend.onrender.com
 Content-Type: application/json
 
 {
-  "text": "example"
+  "data": "example"
 }
 ```
 
