@@ -55,6 +55,8 @@ The server will run by default on:
 | POST   | /api/sort-characters    | Accepts JSON `{ "data": "string" }`, returns sorted string         |
 | GET    | /api/health             | Health check endpoint                                              |
 
+## 🚢 Deployment
+
 Base URL: [https://junior-dev-task-backend.onrender.com](https://junior-dev-task-backend.onrender.com)
 
 ### Example Request
