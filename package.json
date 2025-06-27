@@ -1,5 +1,5 @@
 {
-  "name": "junior-dev-task",
+  "name": "junior-dev-task-backend",
   "version": "1.0.0",
   "main": "api/sort-characters.js",
   "scripts": {
